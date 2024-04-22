@@ -1,0 +1,39 @@
+body{
+    background-image: url("sprites/grass_background.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+button{
+    background: transparent;
+    /* border: none;
+    font-size:0; */
+}
+
+#bigger_img{
+    scale: 150%;
+}
+
+#shop{
+    top: 2%;
+    left: 2%;
+    position: absolute;
+    /* border: none; */
+    scale: 75%;
+}
+
+#player{
+    top: 70%;
+    left: 20%;
+    position: absolute;
+    /* border: none; */
+    scale: 300%;
+}
+
+#enemy{
+    top: 30%;
+    left: 70%;
+    position: absolute;
+    /* border: none; */
+    scale: 200%;
+}
