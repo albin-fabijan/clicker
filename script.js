@@ -1,3 +1,5 @@
+let pokemon_num = 0
+
 function nextPokemon(){
     let money = document.getElementById("money_text")
     let num = money.innerText.split('$')[1]
@@ -16,7 +18,7 @@ function nextPokemon(){
         evolve_price.innerText = "$" + 100*(parseInt(id)+1)*(parseInt(id)+1)
 
         let pokemon_num_text = document.getElementById("pokemon_num")
-        let pokemon_num = pokemon_num_text.innerText.split(": ")[1]
+        pokemon_num = pokemon_num_text.innerText.split(": ")[1]
         pokemon_num_text.innerText = pokemon_num_text.innerText.split(": ")[0] + ": " + (parseInt(pokemon_num)+1)
     }
 }
@@ -53,9 +55,6 @@ function next_click_incr(){
 
         incr_price.innerText = "$" + 10*((incr+1)**2)
     }
-
-    let incr_text = document.getElementById("incr_num")
-    let incr = incr_text.split("lvl ")[1]
 }
 
 let interval_click = null
@@ -92,5 +91,25 @@ async function next_auto_click(){
                 money.innerText = "$" + (parseInt(num) + Math.floor(1/(5000/(lvl**2)))) + ""
             }
         }, 5000/(lvl**2));
+    }
+}
+
+function getPokedex(){
+    let pokedex_div = document.getElementById("pokedex_div")
+    pokedex_div.innerHTML = ""
+
+    let array = new Array(parseInt(pokemon_num))
+
+    for (let i = 0; i < array.length; i++){
+        let button = document.createElement("button")
+
+        let pokemon_img = document.createElement("img")
+        pokemon_img.src = "sprites/black-white/" + (i+1) + ".png"
+
+        button.appendChild(pokemon_img)
+
+        pokedex_div = document.getElementById("pokedex_div")
+
+        pokedex_div.appendChild(button)
     }
 }

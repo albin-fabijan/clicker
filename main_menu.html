@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Poké Clicker</title>
+    <title>Poké Clicker : Menu</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
 </head>
-<body>
+<body style="background-image: url('sprites/grass_background.png');
+            background-repeat: no-repeat;
+            background-size: 120%;
+            background-position: 45% 0%;"
+>
     <img id="shop" src="sprites/shop_page.png">
     <div id="money">
         <p id="money_text">$0</p>        
@@ -25,4 +29,10 @@
     <button id="enemy" onclick="getMoney()">
         <img id="enemy_img" src="sprites/black-white/1.png">
     </button>
+    
+    <a href="pokedex.html" target="_blank">
+        <button id="pokedex">
+            <img src="sprites/pokedex.png">
+        </button>
+    </a>
 </body>
