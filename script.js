@@ -1,4 +1,4 @@
-let pokemon_num = 0
+let total_money_spent = 0
 
 function nextPokemon(){
     let money = document.getElementById("money_text")
@@ -15,10 +15,16 @@ function nextPokemon(){
     if (parseInt(num) >= price){
         img.src = "sprites/black-white/" + (parseInt(id)+1) + ".png"
         money.innerText = "$" + (parseInt(num) - price) + ""
+        total_money_spent += price
         evolve_price.innerText = "$" + 100*(parseInt(id)+1)*(parseInt(id)+1)
+
+        if(localStorage.getItem("num_pkmn") != null){
+            localStorage.removeItem("num_pkmn")
+        }
 
         let pokemon_num_text = document.getElementById("pokemon_num")
         pokemon_num = pokemon_num_text.innerText.split(": ")[1]
+        localStorage.setItem("num_pkmn", parseInt(pokemon_num)+1)
         pokemon_num_text.innerText = pokemon_num_text.innerText.split(": ")[0] + ": " + (parseInt(pokemon_num)+1)
     }
 }
@@ -94,22 +100,48 @@ async function next_auto_click(){
     }
 }
 
-function getPokedex(){
+async function getPokedex(){
     let pokedex_div = document.getElementById("pokedex_div")
     pokedex_div.innerHTML = ""
 
-    let array = new Array(parseInt(pokemon_num))
+    let num = 0
+
+    if(localStorage.getItem("num_pkmn") == null){
+        num = 1
+    }
+    else{
+        num = localStorage.getItem("num_pkmn")
+    }
+
+    let array = new Array(parseInt(num)+1)
 
     for (let i = 0; i < array.length; i++){
-        let button = document.createElement("button")
+        let div = document.createElement("div")
+        div.setAttribute("id", "button_pokedex")
 
         let pokemon_img = document.createElement("img")
         pokemon_img.src = "sprites/black-white/" + (i+1) + ".png"
+        if (i == array.length-1){
+            pokemon_img.style.filter = "grayscale(100%)"
+        }
+        pokemon_img.setAttribute("id", "img_pokedex")
 
-        button.appendChild(pokemon_img)
+        let name = await getPokemonNameFromAPI(i+1)
+
+        let span = document.createElement("span")
+        span.innerText = "#" + (i+1) + " " + name
+        span.setAttribute("id", "name_pokedex")
+
+        div.appendChild(pokemon_img)
+        div.appendChild(span)
 
         pokedex_div = document.getElementById("pokedex_div")
-
-        pokedex_div.appendChild(button)
+        pokedex_div.appendChild(div)
     }
+}
+
+async function getPokemonNameFromAPI(id){
+    let response = await fetch('https://tyradex.vercel.app/api/v1/pokemon/'+id)
+    let obj = await response.json()
+    return obj.name.en
 }

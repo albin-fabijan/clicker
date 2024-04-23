@@ -90,3 +90,23 @@ button{
         transition: transform 1000ms;
     }
 }
+
+#pokedex_div{
+    display: grid;
+}
+
+#button_pokedex{
+    width: 100%;
+}
+
+#img_pokedex{
+    position: relative;
+    float: left;
+    left: 10%;
+}
+
+#name_pokedex{
+    float: right;
+    top: 50%;
+    right: 10%;
+}
