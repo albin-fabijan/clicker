@@ -5,15 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
 </head>
 <body>
-    <button id="shop" class="imgbox">
-        <img src="sprites/button.png">
-    </button>
-    <button id="player" class="imgbox">
-        <img id="bigger_img" src="sprites/black-white/back/3.png">
-    </button>
-    <button id="enemy" class="imgbox">
-        <img id="bigger_img" src="sprites/black-white/3.png">
+    <img id="shop" src="sprites/shop_page.png">
+    <div id="money">
+        <p id="money_text">$0</p>        
+    </div>
+    <div id="buy_list">
+        <div id="list_element"><button id="auto_click" class="element_name" onclick="next_auto_click()"><span>Auto Click +</span></button><span id="auto_click_price" class="element_price">$10</span></div>
+        <div id="list_element"><button id="auto_click" class="element_name" onclick="next_click_incr()"><span>Click Incr. +</span></button><span id="click_incr_price" class="element_price">$10</span></div>
+        <div id="list_element"><button id="evolve" class="element_name" onclick="nextPokemon()"><span>Next Pokemon</span></button><span id="evolve_price" class="element_price">$100</span></div>
+    </div>
+    <div id="bag_list">
+        <div id="bag_element"><span id="auto_click_lvl">Auto Click : lvl 0</span></div>
+        <div id="bag_element"><span id="incr_num">Click Incr. : lvl 0</span></div>
+        <div id="bag_element"><span id="pokemon_num">Pokemons : 0</span></div>
+    </div>
+    <button id="enemy" onclick="getMoney()">
+        <img id="enemy_img" src="sprites/black-white/1.png">
     </button>
 </body>

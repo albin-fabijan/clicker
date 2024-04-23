@@ -1,7 +1,60 @@
 body{
     background-image: url("sprites/grass_background.png");
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: 120%;
+    background-position: 45% 0%;
+}
+
+@font-face {
+    font-family: 'Orange_kid';
+    src: url("fonts/Orange_kid.ttf");
+}
+
+p, span{
+    font-family: "Orange_kid";
+    position: relative;
+    text-align: center;
+    font-size: 200%;
+}
+
+#money_text{
+    font-size: 100%;
+}
+
+#money{
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 13%;
+    font-size: 200%;
+}
+
+#buy_list{
+    position: absolute;
+    top: 15%;
+    left: 30%;
+    width: 28%;
+}
+
+#bag_list{
+    position: absolute;
+    top: 70%;
+    left: 0%;
+    width: 28%;
+}
+
+#bag_element{
+    text-align: center;
+}
+
+.element_name{
+    position: relative;
+    font-size: 100%;
+}
+
+.element_price{
+    position: relative;
+    float: right;
 }
 
 button{
@@ -10,30 +63,28 @@ button{
     font-size:0; */
 }
 
-#bigger_img{
+#enemy_img{
     scale: 150%;
 }
 
 #shop{
-    top: 2%;
-    left: 2%;
+    top: 0%;
+    left: 0%;
     position: absolute;
-    /* border: none; */
-    scale: 75%;
-}
-
-#player{
-    top: 70%;
-    left: 20%;
-    position: absolute;
-    /* border: none; */
-    scale: 300%;
+    height: 100%;
 }
 
 #enemy{
-    top: 30%;
-    left: 70%;
+    top: 50%;
+    left: 75%;
     position: absolute;
     /* border: none; */
     scale: 200%;
+}
+
+.progress {
+    &__bar {
+        transform: scaleX(0);
+        transition: transform 1000ms;
+    }
 }
