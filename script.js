@@ -1,4 +1,6 @@
 let total_money_spent = 0
+let shiny = false
+let luck = 0
 
 function nextPokemon(){
     let money = document.getElementById("money_text")
@@ -7,16 +9,34 @@ function nextPokemon(){
     let img = document.getElementById("enemy_img")
     let src = img.src + ""
     let slice1 = src.split('black-white/')[1] + ""
-    let id = slice1.split('.')[0]
+    let id = ""
+    if (!slice1.includes("shiny")){
+        id = slice1.split('.')[0]
+    }
+    else{
+        let slice2 = slice1.split('shiny/')[1] + ""
+        id = slice2.split('.')[0]
+    }
 
     let evolve_price = document.getElementById("evolve_price")
     price = evolve_price.innerText.split('$')[1]
     
     if (parseInt(num) >= price){
-        img.src = "sprites/black-white/" + (parseInt(id)+1) + ".png"
+        if (parseInt(id)+1 <= 649 && !shiny){
+            img.src = "sprites/black-white/" + (parseInt(id)+1) + ".png"
+            evolve_price.innerText = "$" + Math.floor(100*(parseInt(id)+1)*(parseInt(id)+1)**((id/100)+1))
+        }
+        else if (parseInt(id) == 649 && !shiny){
+            shiny = true
+            img.src = "sprites/black-white/shiny/1.png"
+            evolve_price.innerText = "$" + 100*(parseInt(id)+1)*(parseInt(id)+1)*(parseInt(id))
+        }
+        else{
+            img.src = "sprites/black-white/shiny/" + (parseInt(id)+1) + ".png"
+            evolve_price.innerText = "$" + 100*(parseInt(id)+650)**(Math.floor(id/10)+1)
+        }
         money.innerText = "$" + (parseInt(num) - price) + ""
         total_money_spent += price
-        evolve_price.innerText = "$" + 100*(parseInt(id)+1)*(parseInt(id)+1)
 
         if(localStorage.getItem("num_pkmn") != null){
             localStorage.removeItem("num_pkmn")
@@ -64,6 +84,7 @@ function next_click_incr(){
 }
 
 let interval_click = null
+let interval_luck = null
 
 async function next_auto_click(){
     let money = document.getElementById("money_text")
@@ -90,13 +111,42 @@ async function next_auto_click(){
             let money = document.getElementById("money_text")
             let num = money.innerText.split('$')[1]
 
-            if (5000/(lvl**2) > 1){
+            if (5000/(lvl**2) > 10){
                 money.innerText = "$" + (parseInt(num) + 1) + ""
             }
             else{
-                money.innerText = "$" + (parseInt(num) + Math.floor(1/(5000/(lvl**2)))) + ""
+                money.innerText = "$" + (parseInt(num) + parseInt(lvl-22) * Math.floor(Math.floor(((lvl-22)**2)/lvl) + 1)) + ""
             }
         }, 5000/(lvl**2));
+    }
+}
+
+async function next_luck(){
+    let money = document.getElementById("money_text")
+    let num = money.innerText.split('$')[1]
+
+    let luck_price = document.getElementById("luck_price")
+    price = luck_price.innerText.split('$')[1]
+
+    if (parseInt(num) >= 0){
+        // money.innerText = "$" + (parseInt(num) - price) + ""
+
+        luck++
+        
+        luck_price.innerText = "$" + 10**luck
+
+        clearInterval(interval_luck)
+
+        interval_luck = setInterval(() => {
+            const array = new Uint32Array(1);
+            self.crypto.getRandomValues(array);
+        
+            console.log(array[0]%4000)
+        
+            if (array[0]%4000 <= luck){
+                lucky()
+            }
+        }, 1);
     }
 }
 
@@ -116,27 +166,52 @@ async function getPokedex(){
     let array = new Array(parseInt(num)+1)
 
     for (let i = 0; i < array.length; i++){
-        let div = document.createElement("div")
-        div.setAttribute("id", "button_pokedex")
+        if (i < 649){
+            let div = document.createElement("div")
+            div.setAttribute("id", "button_pokedex")
 
-        let pokemon_img = document.createElement("img")
-        pokemon_img.src = "sprites/black-white/" + (i+1) + ".png"
-        if (i == array.length-1){
-            pokemon_img.style.filter = "grayscale(100%)"
+            let pokemon_img = document.createElement("img")
+            pokemon_img.src = "sprites/black-white/" + (i+1) + ".png"
+            if (i == array.length-1){
+                pokemon_img.style.filter = "grayscale(100%)"
+            }
+            pokemon_img.setAttribute("id", "img_pokedex")
+
+            let name = await getPokemonNameFromAPI(i+1)
+
+            let span = document.createElement("span")
+            span.innerText = "#" + (i+1) + " " + name
+            span.setAttribute("id", "name_pokedex")
+
+            div.appendChild(pokemon_img)
+            div.appendChild(span)
+
+            pokedex_div = document.getElementById("pokedex_div")
+            pokedex_div.appendChild(div)
         }
-        pokemon_img.setAttribute("id", "img_pokedex")
+        else{
+            let div = document.createElement("div")
+            div.setAttribute("id", "button_pokedex")
 
-        let name = await getPokemonNameFromAPI(i+1)
+            let pokemon_img = document.createElement("img")
+            pokemon_img.src = "sprites/black-white/shiny/" + (i-648) + ".png"
+            if (i == array.length-1){
+                pokemon_img.style.filter = "grayscale(100%)"
+            }
+            pokemon_img.setAttribute("id", "img_pokedex")
 
-        let span = document.createElement("span")
-        span.innerText = "#" + (i+1) + " " + name
-        span.setAttribute("id", "name_pokedex")
+            let name = await getPokemonNameFromAPI(i-648)
 
-        div.appendChild(pokemon_img)
-        div.appendChild(span)
+            let span = document.createElement("span")
+            span.innerText = "#" + (i-648) + "\u25ca" + "\u02da" + " Shiny " + name
+            span.setAttribute("id", "name_pokedex")
 
-        pokedex_div = document.getElementById("pokedex_div")
-        pokedex_div.appendChild(div)
+            div.appendChild(pokemon_img)
+            div.appendChild(span)
+
+            pokedex_div = document.getElementById("pokedex_div")
+            pokedex_div.appendChild(div)
+        }
     }
 }
 
@@ -144,4 +219,58 @@ async function getPokemonNameFromAPI(id){
     let response = await fetch('https://tyradex.vercel.app/api/v1/pokemon/'+id)
     let obj = await response.json()
     return obj.name.en
+}
+
+function lucky(){
+    let button = document.createElement("button")
+    button.setAttribute("id", "lucky_button")
+    button.style.position = "absolute"
+    const array = new Uint32Array(2);
+    self.crypto.getRandomValues(array);
+    button.style.top = array[0]%90 + "%"
+    button.style.left = array[1]%90 + "%"
+    button.onclick = lucky_clicked
+    
+    let img = document.createElement("img")
+    img.src = "sprites/coin1.png"
+    button.appendChild(img)
+
+    document.body.appendChild(button)
+
+    let interval_luck_gone = null
+
+    clearInterval(interval_luck_gone)
+
+    let timer = 0
+    
+    fadeIn(img)
+
+    interval_luck_gone = setInterval(() => {
+        if (timer < 5){
+            timer++
+        }
+        else{
+            timer = 0
+            button.remove()
+            clearInterval(interval_luck_gone)
+        }
+    }, 1000);
+}
+
+function lucky_clicked(){
+    let button = document.getElementById("lucky_button")
+    button.remove()
+
+    //add bonus
+}
+
+function fadeIn(el) {
+    el.style.opacity = 0;
+    var tick = function () {
+        el.style.opacity = +el.style.opacity + 0.005;
+        if (+el.style.opacity < 1) {
+            (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16)
+        }
+    };
+    tick();
 }
