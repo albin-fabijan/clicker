@@ -42,6 +42,13 @@ function getMoney(){
     let incr = incr_text.innerText.split("lvl ")[1]
 
     money.innerText = "$" + (parseInt(num)+(parseInt(id)+parseInt(incr))) + ""
+
+    // Cloner l'élément audio
+    const clickSound = document.getElementById("clickSound");
+    const clonedSound = clickSound.cloneNode();
+    
+    // Jouer le son cloné
+    clonedSound.play();
 }
 
 function next_click_incr(){
