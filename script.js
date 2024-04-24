@@ -2,6 +2,32 @@ let total_money_spent = 0
 let shiny = false
 let luck = 0
 
+let show = false
+let count = 0
+
+let konami = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"]
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("keydown", (event) => {
+        if (event.key === konami[count]){
+            count++
+        }
+        else{
+            count = 0
+        }
+
+        if (count == 10){
+            show = true
+        }
+
+        if (show){
+            show = false
+            count = 0
+            lucky()
+        }
+    });
+})
+
 function nextPokemon(){
     let money = document.getElementById("money_text")
     let num = money.innerText.split('$')[1]
@@ -107,8 +133,13 @@ async function next_auto_click(){
         let lvl = lvl_text.innerText.split("lvl ")[1]
         lvl++
         lvl_text.innerText = lvl_text.innerText.split("lvl ")[0] + "lvl " + lvl
-        
-        click_price.innerText = "$" + 10*((lvl+1)**2)
+
+        if (lvl < 30){
+            click_price.innerText = "$" + 10*((lvl+1)**2)
+        }
+        else{
+            click_price.innerText = "$" + price*(lvl-28)**Math.floor(((lvl*2)/60))
+        }
 
         clearInterval(interval_click)
 
@@ -135,12 +166,12 @@ async function next_luck(){
     let luck_price = document.getElementById("luck_price")
     price = luck_price.innerText.split('$')[1]
 
-    if (parseInt(num) >= 0){
-        // money.innerText = "$" + (parseInt(num) - price) + ""
+    if (parseInt(num) >= price){
+        money.innerText = "$" + (parseInt(num) - price) + ""
 
         luck++
         
-        luck_price.innerText = "$" + 10**luck
+        luck_price.innerText = "$" + 10**(luck+2)
 
         clearInterval(interval_luck)
 
@@ -153,7 +184,7 @@ async function next_luck(){
             if (array[0]%4000 <= luck){
                 lucky()
             }
-        }, 1);
+        }, 1000);
     }
 }
 
@@ -265,10 +296,13 @@ function lucky(){
 }
 
 function lucky_clicked(){
+    let money = document.getElementById("money_text")
+    let num = money.innerText.split('$')[1]
+
+    money.innerText = "$" + parseInt(num)*2 + ""
+    
     let button = document.getElementById("lucky_button")
     button.remove()
-
-    //add bonus
 }
 
 function fadeIn(el) {
