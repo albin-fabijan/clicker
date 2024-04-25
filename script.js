@@ -77,7 +77,7 @@ async function next_auto_click(){
     let num = money.innerText.split('$')[1]
 
     let click_price = document.getElementById("auto_click_price")
-    price = click_price.innerText.split('$')[1]
+    let price = click_price.innerText.split('$')[1]
 
     if (parseInt(num) >= price){
         money.innerText = "$" + (parseInt(num) - price) + ""
@@ -87,7 +87,8 @@ async function next_auto_click(){
         lvl++
         lvl_text.innerText = lvl_text.innerText.split("lvl ")[0] + "lvl " + lvl
         
-        click_price.innerText = "$" + 10*((lvl+1)**2)
+        click_price.innerText = "$" + 10*((lvl+1)**2);
+
 
         clearInterval(interval_click)
 
@@ -103,7 +104,14 @@ async function next_auto_click(){
             else{
                 money.innerText = "$" + (parseInt(num) + Math.floor(1/(5000/(lvl**2)))) + ""
             }
-        }, 5000/(lvl**2));
+            // Jouer le son à chaque clic
+            const clickSound = document.getElementById("autoClickSound");
+            const clonedSound = clickSound.cloneNode();
+
+            // Jouer le son cloné
+            clonedSound.play();
+        }, 1000);
+        
     }
 }
 
