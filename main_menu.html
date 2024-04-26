@@ -11,6 +11,7 @@
             background-repeat: no-repeat;
             background-size: 120%;
             background-position: 45% 0%;"
+      onload="setup()"
 >
     <img id="shop" src="sprites/shop_page.png">
     <div id="money">
@@ -36,6 +37,8 @@
             <img src="sprites/pokedex.png">
         </button>
     </a>
+
+    <button id="reset" onclick="reset()">Reset</button>
 
     <audio id="clickSound" src="sounds/happy-pop-2-185287.mp3" hidden></audio>
     <audio id="autoClickSound" src="sounds/90s-game-ui-6-185099.mp3"></audio>
