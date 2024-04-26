@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Poké Clicker : Menu</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body style="background-image: url('sprites/grass_background.png');
+            background-repeat: no-repeat;
+            background-size: 120%;
+            background-position: 45% 0%;"
+      onload="setup()"
+>
+    <img id="shop" src="sprites/shop_page.png">
+    <div id="money">
+        <p id="money_text">$0</p>        
+    </div>
+    <div id="buy_list">
+        <div id="list_element"><button id="auto_click" class="element_name" onclick="next_auto_click()"><span>Auto Click +</span></button><span id="auto_click_price" class="element_price">$10</span></div>
+        <div id="list_element"><button id="click" class="element_name" onclick="next_click_incr()"><span>Click Incr. +</span></button><span id="click_incr_price" class="element_price">$10</span></div>
+        <div id="list_element"><button id="luck" class="element_name" onclick="next_luck()"><span>Luck +</span></button><span id="luck_price" class="element_price">$100</span></div>
+        <div id="list_element"><button id="evolve" class="element_name" onclick="nextPokemon()"><span>Next Pokemon</span></button><span id="evolve_price" class="element_price">$100</span></div>
+    </div>
+    <div id="bag_list">
+        <div id="bag_element"><span id="auto_click_lvl">Auto Click : lvl 0</span></div>
+        <div id="bag_element"><span id="incr_num">Click Incr. : lvl 0</span></div>
+        <div id="bag_element"><span id="pokemon_num">Pokemons : 0</span></div>
+    </div>
+    <button id="enemy" onclick="getMoney()">
+        <img id="enemy_img" src="sprites/black-white/1.png">
+    </button>
+    
+    <a href="pokedex.html" target="_blank">
+        <button id="pokedex">
+            <img src="sprites/pokedex.png">
+        </button>
+    </a>
+
+    <button id="reset" onclick="reset()">Reset</button>
+
+    <audio id="clickSound" src="sounds/happy-pop-2-185287.mp3" hidden></audio>
+    <audio id="autoClickSound" src="sounds/90s-game-ui-6-185099.mp3"></audio>
+
+
+</body>
