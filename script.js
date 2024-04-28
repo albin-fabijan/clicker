@@ -43,8 +43,8 @@ function setup(){
             lvl--
         }
         else{
-            price = click_price.innerText.split('$')[1]
-            click_price.innerText = "$" + price*(lvl-28)**Math.floor(((lvl*2)/60))
+            price = localStorage.getItem("lastPrice")
+            click_price.innerText = "$" + Math.floor(price*1.2)
         }
         if (lvl > 0){
             interval_click = setInterval(() => {
@@ -157,18 +157,35 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 function getNumAbreviation(n){
-    if (n > 1000000){
-        print_num = Math.floor(n/1000000) + "." + Math.floor((n%1000000)/1000) + "M"
+    if (n > 1000){
+        let letter = "k"
+        let biggerNum = 1000
+        if (n > 1000000){
+            letter = "M"
+            biggerNum = 1000000
+            if (n > 1000000000){
+                letter = "B"
+                biggerNum = 1000000000
+                if (n > 1000000000000){
+                    letter = "T"
+                    biggerNum = 1000000000000
+                }
+            }
+        }
+        let smallerNums = Math.floor((n%biggerNum)/(biggerNum/1000))
+        if (smallerNums < 100){
+            smallerNums = "0" + smallerNums
+            if (smallerNums < 10){
+                smallerNums = "0" + smallerNums
+            }
+        }
+        print_num = Math.floor(n/biggerNum) + "." + smallerNums + letter
         return print_num
     }
     else{
         return n
     }
 }
-
-setInterval(() => {
-    console.log(getNumAbreviation(money_num))
-}, 1);
 
 function nextPokemon(){
     let img = document.getElementById("enemy_img")
@@ -189,12 +206,14 @@ function nextPokemon(){
     if (parseInt(money_num) >= price){
         if (parseInt(id)+1 <= 649 && !shiny){
             img.src = "sprites/black-white/" + (parseInt(id)+1) + ".png"
-            evolve_price.innerText = "$" + Math.floor(100*(parseInt(id)+1)*(parseInt(id)+1)**((id/100)+1))
+            let price_num = Math.floor(100*(parseInt(id)+1)*(parseInt(id)+1)**((id/100)+1))
+            evolve_price.innerText = "$" + parseInt(price_num)
         }
         else if (parseInt(id) == 649 && !shiny){
             shiny = true
             img.src = "sprites/black-white/shiny/1.png"
-            evolve_price.innerText = "$" + Math.floor(100*(parseInt(id)+1)*(parseInt(id)+1)**((id/100)+1))
+            let price_num = Math.floor(100*(parseInt(id)+1)*(parseInt(id)+1)**((id/100)+1))
+            evolve_price.innerText = "$" + parseInt(price_num)
         }
         else{
             img.src = "sprites/black-white/shiny/" + (parseInt(id)+1) + ".png"
@@ -275,7 +294,8 @@ async function next_auto_click(){
             click_price.innerText = "$" + 10*((lvl+1)**2)
         }
         else{
-            click_price.innerText = "$" + price*(lvl-28)**Math.floor(((lvl*2)/60))
+            localStorage.setItem("lastPrice", price)
+            click_price.innerText = "$" + Math.floor(price*1.2)
         }
 
         clearInterval(interval_click)
