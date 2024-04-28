@@ -293,7 +293,13 @@ async function next_auto_click(){
                 money.innerText = "$" + getNumAbreviation(money_num) + ""
                 localStorage.setItem("money", parseInt(money_num))
             }
-        }, 5000/(lvl**2));    
+            // Jouer le son à chaque clic
+            const clickSound = document.getElementById("autoClickSound");
+            const clonedSound = clickSound.cloneNode();
+        
+            // Jouer le son cloné
+            clonedSound.play();
+        }, 1000);   
     }
     // Clone the audio element
     const autoClickSound = document.getElementById("autoClickSound");
