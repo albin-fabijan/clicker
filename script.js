@@ -29,7 +29,7 @@ function setup(){
             evolve_price.innerText = "$" + Math.floor(100*(parseInt(pkmn_num)+1)*(parseInt(pkmn_num)+1)**((pkmn_num/100)+1))
         }
 
-        //auto
+    
         let lvl_text = document.getElementById("auto_click_lvl")
         let click_price = document.getElementById("auto_click_price")
         let lvl = 0
@@ -258,7 +258,7 @@ function next_click_incr(){
 
 async function next_auto_click(){
     let click_price = document.getElementById("auto_click_price")
-    let price = click_price.innerText.split('$')[1]
+    price = click_price.innerText.split('$')[1]
 
     if (money_num >= price){
         money_num -= price
@@ -278,7 +278,6 @@ async function next_auto_click(){
             click_price.innerText = "$" + price*(lvl-28)**Math.floor(((lvl*2)/60))
         }
 
-
         clearInterval(interval_click)
 
         interval_click = setInterval(() => {
@@ -294,15 +293,14 @@ async function next_auto_click(){
                 money.innerText = "$" + getNumAbreviation(money_num) + ""
                 localStorage.setItem("money", parseInt(money_num))
             }
-            // Jouer le son à chaque clic
-            const clickSound = document.getElementById("autoClickSound");
-            const clonedSound = clickSound.cloneNode();
-
-            // Jouer le son cloné
-            clonedSound.play();
-        }, 1000);
-        
+        }, 5000/(lvl**2));    
     }
+    // Clone the audio element
+    const autoClickSound = document.getElementById("autoClickSound");
+    const clonedSound = autoClickSound.cloneNode();
+            
+    // Play the cloned sound
+    clonedSound.play();
 }
 
 async function next_luck(){
@@ -460,3 +458,18 @@ function fadeIn(el) {
     };
     tick();
 }
+
+let musicPlaying = false;
+
+function toggleMusic() {
+    let music = document.getElementById("music_player");
+    
+    if (!musicPlaying) {
+        music.play();
+        musicPlaying = true;
+    } else {
+        music.pause();
+        musicPlaying = false;
+    }
+}
+
